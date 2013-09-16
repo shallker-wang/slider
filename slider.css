@@ -1,4 +1,4 @@
-.slider{overflow:hidden;}
-.slider .inner:before,.slider .inner:after{display:table;content:" ";line-height:0}
-.slider .inner:after{clear:both}
-.slider .inner .slide{float:left}
+.component.slider{overflow:hidden;}
+.component.slider .inner:before,.component.slider .inner:after{display:table;content:" ";line-height:0}
+.component.slider .inner:after{clear:both}
+.component.slider .inner .slide{float:left}
