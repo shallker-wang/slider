@@ -16,7 +16,7 @@ html.no-ie(lang="en")
       })
 
   body
-    #slider.slider(style="width: 200px; height: 200px;")
+    #slider.component.slider(style="width: 200px; height: 200px;")
       .inner
         .slide
           img(src="http://dummyimage.com/200x200&text=1")
@@ -28,3 +28,8 @@ html.no-ie(lang="en")
           img(src="http://dummyimage.com/200x200&text=4")
         .slide
           img(src="http://dummyimage.com/200x200&text=5")
+    br
+    button(onclick="slider.prev()") prev
+    button(onclick="slider.next()") next
+    button(onclick="slider.left(1)") left(1)
+    button(onclick="slider.right(1)") right(1)
