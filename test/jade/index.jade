@@ -1,0 +1,30 @@
+html.no-ie(lang="en")
+  head
+    title Test
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="../build/build.css")
+    script(src="../build/build.js")
+    script
+      var jQuery = jQuery || require('jquery');
+      window.$ = jQuery;
+      var Slider = require('slider');
+      jQuery(function () {
+        jQuery('.slider').each(function (index, item) {
+          window.slider = new Slider(item);
+        });        
+      })
+
+  body
+    #slider.slider(style="width: 400px; height: 200px;")
+      .inner
+        .slide(style="width: 200px;")
+          img(src="http://dummyimage.com/200x200&text=1")
+        .slide
+          img(src="http://dummyimage.com/200x200&text=2")
+        .slide
+          img(src="http://dummyimage.com/200x200&text=3")
+        .slide
+          img(src="http://dummyimage.com/200x200&text=4")
+        .slide
+          img(src="http://dummyimage.com/200x200&text=5")

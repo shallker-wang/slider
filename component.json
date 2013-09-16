@@ -1,0 +1,23 @@
+{
+  "name": "slider",
+  "repo": "shallker-wang/slider",
+  "description": "One time solution",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "component/jquery": "*",
+    "shallker-wang/eventy": "*"
+  },
+  "development": {},
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": [
+    "index.js",
+    "lib/slider.js",
+    "lib/slides.js",
+    "lib/mover.js"
+  ],
+  "styles": [
+    "slider.css"
+  ]
+}
