@@ -1,7 +1,7 @@
 
 # slider
 
-  One time solution
+  Every JavaScript developer has done it once
 
 ## Installation
 
