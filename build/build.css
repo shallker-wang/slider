@@ -1,0 +1,4 @@
+.slider{overflow:hidden;}
+.slider .inner:before,.slider .inner:after{display:table;content:" ";line-height:0}
+.slider .inner:after{clear:both}
+.slider .inner .slide{float:left}
