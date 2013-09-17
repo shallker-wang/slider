@@ -10283,16 +10283,38 @@ module.exports = function Slider(el) {
     return this;
   }.call(el);
 
+  slider.auto = function (yes) {
+    option.auto = yes;
+    return this;
+  }
+
+  slider.continuous = function (yes) {
+    option.continuous = yes;
+    return this;
+  }
+
+  slider.infinity = function (yes) {
+    option.infinity = yes;
+    return this;
+  }
+
+  slider.speed = function (milliseconds) {
+    option.speed = milliseconds;
+    return this;
+  }
+
   /*
     Slide to the slide of the index
   */
-  slider.to = function (slide, callback) {
+  slider.to = function (slide) {
     if (slide < 1) slide = 1;
     if (slide > slides.length) slide = slides.length;
-    mover.animateLeft(slides.distance(slide), callback);
+    if (slide < slides.first().slide) return this.left(slides.length - slides.index(slide));
+    else return this.right(slides.index(slide));
+    // mover.animateLeft(slides.distance(slide), callback);
     // mover.speed(0).moveLeft(distance);
-    slides.active(slide);
-    return this;
+    // slides.active(slide);
+    // return this.right(slides.index(slide));
   }
 
   slider.next = function () {
@@ -10312,8 +10334,8 @@ module.exports = function Slider(el) {
       slides.prepend(slides.pop());
     }
 
-    mover.moveTo(-slides.distance(amount + 1));
-    mover.animateTo(0)
+    mover.left(-slides.widths(amount));
+    mover.animateLeft(0)
     return this; 
   }
 
@@ -10322,8 +10344,8 @@ module.exports = function Slider(el) {
     @arguments Number amount
   */
   slider.right = function (amount) {
-    mover.animateTo(-slides.distance(amount + 1), function () {
-      mover.moveTo(0);
+    mover.animateLeft(-slides.widths(amount), function () {
+      mover.left(0);
 
       for (var i = 0; i < amount; i++) {
         slides.append(slides.shift());
@@ -10372,6 +10394,7 @@ module.exports = function Slides(el) {
     var els = [];
 
     $(el).children().each(function (index, item) {
+      item.slide = index + 1;
       els.push(item);
     })
 
@@ -10474,8 +10497,32 @@ module.exports = function Slides(el) {
     return this;
   }
 
+  slides.widths = function (amount) {
+    return this.width / this.length * amount;
+  }
+
+  slides.heights = function (amount) {
+    return this.height / this.length * amount;
+  }
+
   slides.distance = function (slide) {
-    return (this.width / this.length) * (slide - 1)
+    return this.widths(this.index(slide));
+  }
+
+  /*
+    Return current index in the slides list
+    @arguments Number slide
+  */
+  slides.index = function (slide) {
+    for (var i = 0; i < this.length; i++) {
+      if (this[i].slide === slide) return i;
+    }
+
+    return 0;
+  }
+
+  slides.position = function (slide) {
+    return this.index(slide) + 1;
   }
 
   slides.active = function (slide) {
@@ -10527,12 +10574,12 @@ module.exports = function Mover(el) {
     else return parseInt($(el).css('marginLeft').replace(/[^-\d\.]/g, ''));
   }
 
-  mover.moveTo = function (marginLeft) {
+  mover.left = function (marginLeft) {
     $(el).css('margin-left', marginLeft);
     return this;
   }
 
-  mover.animateTo = function (marginLeft, callback) {
+  mover.animateLeft = function (marginLeft, callback) {
     $(el).stop(true).animate({marginLeft: marginLeft}, speed, callback);
     return this;
   }
@@ -10544,16 +10591,6 @@ module.exports = function Mover(el) {
 
   mover.moveRight = function (distance) {
     $(el).css('margin-left', this.marginLeft() + distance);
-    return this;
-  }
-
-  mover.animateLeft = function (distance, callback) {
-    $(el).stop(true).animate({marginLeft: this.marginLeft() - distance}, speed, callback);
-    return this;
-  }
-
-  mover.animateRight = function (distance, callback) {
-    $(el).stop(true).animate({marginLeft: this.marginLeft() + distance}, speed, callback);
     return this;
   }
 
