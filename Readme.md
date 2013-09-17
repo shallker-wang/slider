@@ -18,7 +18,7 @@
 ## API
 ```javascript
 var Slider = require('slider');
-var slider = new Slider(element);
+var slider = new Slider($('.component.slider'));
 ```
 
 #### slider.to(Number slide)
