@@ -31,9 +31,12 @@ var slider = new Slider(element);
 
 
 ## Test
-http://shallker-wang.github.io/slider/test/index.html
-http://shallker-wang.github.io/slider/test/two.html
+http://shallker-wang.github.io/slider/test/index.html   
+http://shallker-wang.github.io/slider/test/two.html   
 
+
+## Todo
+- remove jQuery dependency
 
 ## License
 
