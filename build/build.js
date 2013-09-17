@@ -10286,21 +10286,21 @@ module.exports = function Slider(el) {
   /*
     Slide to the slide of the index
   */
-  slider.to = function (slide) {
+  slider.to = function (slide, callback) {
     if (slide < 1) slide = 1;
     if (slide > slides.length) slide = slides.length;
-    mover.animateLeft(slides.distance(slide));
+    mover.animateLeft(slides.distance(slide), callback);
     // mover.speed(0).moveLeft(distance);
     slides.active(slide);
     return this;
   }
 
   slider.next = function () {
-    return this.to(slides.current + 1);
+    return this.right(1);
   }
 
   slider.prev = function () {
-    return this.to(slides.current - 1);
+    return this.left(1);
   }
 
   /*
@@ -10308,8 +10308,13 @@ module.exports = function Slider(el) {
     @arguments Number amount
   */
   slider.left = function (amount) {
-    if (slides.current - amount < 1) return;
-    return this.to(slides.current - amount);    
+    for (var i = 0; i < amount; i++) {
+      slides.prepend(slides.pop());
+    }
+
+    mover.moveTo(-slides.distance(amount + 1));
+    mover.animateTo(0)
+    return this; 
   }
 
   /*
@@ -10317,8 +10322,15 @@ module.exports = function Slider(el) {
     @arguments Number amount
   */
   slider.right = function (amount) {
-    if (slides.current + amount > slides.length) return;
-    return this.to(slides.current + amount);
+    mover.animateTo(-slides.distance(amount + 1), function () {
+      mover.moveTo(0);
+
+      for (var i = 0; i < amount; i++) {
+        slides.append(slides.shift());
+      }
+    })
+
+    return this;
   }
 
   slider.start = function () {
@@ -10360,7 +10372,7 @@ module.exports = function Slides(els) {
     if (!this.item) this.item = function (index) {return this[index];}
 
     return this;
-  }.call(eventy(els));
+  }.call(eventy(Object.create(els)));
 
   slides.current = 1;
 
@@ -10418,11 +10430,11 @@ module.exports = function Slides(els) {
   }
 
   slides.first = function () {
-    return this.item(0);
+    return this.slide(1);
   }
 
   slides.last = function () {
-    return this.item(this.length - 1);
+    return this.slide(this.length);
   }
 
   slides.parent = function () {
@@ -10431,21 +10443,23 @@ module.exports = function Slides(els) {
 
   slides.shift = function (number) {
     if (this.length <= 0) return;
-    return this.removeChild(this.first());
+    return this.parent().removeChild(els.shift());
   }
 
   slides.pop = function (number) {
     if (this.length <= 0) return;
-    return this.removeChild(this.last());
+    return this.parent().removeChild(els.pop());
   }
 
   slides.append = function (element) {
     // return this.parent().insertBefore(element, this.last().nextSibling)
-    return this.parent().appendChild(element);
+    els.push(this.parent().appendChild(element));
+    return this;
   }
 
   slides.prepend = function (element) {
-    return this.parent().insertBefore(element, this.first());
+    els.unshift(this.parent().insertBefore(element, this.first()));
+    return this;
   }
 
   slides.distance = function (slide) {
@@ -10476,15 +10490,15 @@ module.exports = function Mover(el) {
 
   var mover = function () {
     return this;
-  }.call(el);
+  }.call(Object.create(el));
 
   mover.width = function (value) {
-    $(this).width(value);
+    $(el).width(value);
     return this;
   }
 
   mover.height = function (value) {
-    $(this).height(value);
+    $(el).height(value);
     return this;
   }
 
@@ -10494,19 +10508,40 @@ module.exports = function Mover(el) {
   }
 
   /*
-    @arguments Pixels
+    Return or set margin left of mover
   */
-  mover.left = function (distance) {
-
+  mover.marginLeft = function (value) {
+    if (value) return $(el).css('marginLeft', value);
+    else return parseInt($(el).css('marginLeft').replace(/[^-\d\.]/g, ''));
   }
 
-  mover.moveLeft = function (distance) {
-    $(this).css('margin-left', -distance);
+  mover.moveTo = function (marginLeft) {
+    $(el).css('margin-left', marginLeft);
     return this;
   }
 
-  mover.animateLeft = function (distance) {
-    $(this).stop(true).animate({marginLeft: -distance}, speed);
+  mover.animateTo = function (marginLeft, callback) {
+    $(el).stop(true).animate({marginLeft: marginLeft}, speed, callback);
+    return this;
+  }
+
+  mover.moveLeft = function (distance) {
+    $(el).css('margin-left', this.marginLeft() - distance);
+    return this;
+  }
+
+  mover.moveRight = function (distance) {
+    $(el).css('margin-left', this.marginLeft() + distance);
+    return this;
+  }
+
+  mover.animateLeft = function (distance, callback) {
+    $(el).stop(true).animate({marginLeft: this.marginLeft() - distance}, speed, callback);
+    return this;
+  }
+
+  mover.animateRight = function (distance, callback) {
+    $(el).stop(true).animate({marginLeft: this.marginLeft() + distance}, speed, callback);
     return this;
   }
 
