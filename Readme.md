@@ -9,6 +9,12 @@
 
     $ component install shallker-wang/slider
 
+
+## Features
+- fluent api
+- events support
+- continuous and infinity sliding
+
 ## API
 ```javascript
 var Slider = require('slider');
@@ -31,9 +37,12 @@ var slider = new Slider(element);
 
 
 ## Test
-http://shallker-wang.github.io/slider/test/index.html
-http://shallker-wang.github.io/slider/test/two.html
+http://shallker-wang.github.io/slider/test/index.html   
+http://shallker-wang.github.io/slider/test/two.html   
 
+
+## Todo
+- remove jQuery dependency
 
 ## License
 
