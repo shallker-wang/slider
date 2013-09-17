@@ -30,6 +30,11 @@ var slider = new Slider(element);
 #### slider.end()
 
 
+## Test
+http://shallker-wang.github.io/slider/test/index.html
+http://shallker-wang.github.io/slider/test/two.html
+
+
 ## License
 
   MIT
