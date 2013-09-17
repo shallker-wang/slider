@@ -10272,8 +10272,8 @@ module.exports = function Slider(el) {
   }
 
   var slider = function () {
-    mover = new Mover($(this).find('>.inner').first());
-    slides = new Slides($(this).find('>.inner >.slide').get());
+    mover = new Mover($(this).find('>.slides').get(0));
+    slides = new Slides($(this).find('>.slides').get(0));
     mover.width(slides.width);
 
     slides.on('resize', function (width) {
@@ -10362,19 +10362,31 @@ var jQuery = jQuery || require('jquery'),
     $ = jQuery;
 
 /*
-  @arguments Array els
+  @arguments HTMLElement el
 */
-module.exports = function Slides(els) {
+module.exports = function Slides(el) {
   var direction = 'horizontal'; // or 'vertical'
   var checkingInterval = 100;
 
-  var slides = function () {
-    if (!this.item) this.item = function (index) {return this[index];}
+  var els = (function () {
+    var els = [];
 
+    $(el).children().each(function (index, item) {
+      els.push(item);
+    })
+
+    return els;
+  })();
+
+  var slides = function () {
     return this;
   }.call(eventy(Object.create(els)));
 
   slides.current = 1;
+
+  slides.item = function (index) {
+    return els[index];
+  }
 
   slides.width = (function () {
     if (direction === 'vertical') return $(slides[0]).width();
