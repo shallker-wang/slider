@@ -9,6 +9,12 @@
 
     $ component install shallker-wang/slider
 
+
+## Features
+- fluent api
+- events support
+- continuous and infinity sliding
+
 ## API
 ```javascript
 var Slider = require('slider');
