@@ -37,7 +37,7 @@ var slider = new Slider($('.component.slider'));
 
 
 ## Test
-http://shallker-wang.github.io/slider/test/index.html   
+http://shallker-wang.github.io/slider/test/one.html   
 http://shallker-wang.github.io/slider/test/two.html   
 
 
