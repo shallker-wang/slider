@@ -43,6 +43,7 @@ http://shallker-wang.github.io/slider/test/two.html
 
 ## Todo
 - remove jQuery dependency
+- fix start() and end()
 
 ## License
 
